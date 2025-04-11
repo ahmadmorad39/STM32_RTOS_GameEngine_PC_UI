@@ -20,3 +20,5 @@ This project showcases a FreeRTOS-based game engine running on the STM32F429I-DI
 - Flash STM32 firmware from `stm32-firmware/`
 - Run GUI via `python3 python-ui/main.py`
 - Connect USB UART (check COM port)
+
+![Demo Animation](demo.gif)
