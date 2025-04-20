@@ -6,7 +6,6 @@ from PyQt5.QtCore import Qt
 from game_launcher import launch_project
 import os
 
-
 class Dashboard(QWidget):
     def __init__(self):
         super().__init__()
@@ -68,7 +67,7 @@ class Dashboard(QWidget):
         # Dropdown
         self.dropdown = QComboBox()
         self.dropdown.setFont(QFont("Segoe UI", 13))
-        self.dropdown.addItems(["Snake Game", "Platformer (Coming Soon)", "Space Shooter (Coming Soon)"])
+        self.dropdown.addItems(["snake_game", "door_lock "])
         self.dropdown.setFixedHeight(40)
         layout.addWidget(self.dropdown)
 
@@ -87,4 +86,4 @@ class Dashboard(QWidget):
     def start_selected_project(self):
         project = self.dropdown.currentText()
         self.hide()
-        launch_project(project)
+        launch_project(project, parent_dashboard=self)

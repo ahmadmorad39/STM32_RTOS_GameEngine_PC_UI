@@ -18,14 +18,15 @@ def scale_adc_to_screen(adc_value, screen_size, adc_max=ADC_MAX, adc_center=ADC_
         return 0
     return int(scaled * (screen_size / 2))
 
-serial = SerialReader(port="COM3", baudrate=115200)
 class SnakeGame:
-    def __init__(self, width=SCREEN_WIDTH, height=SCREEN_HEIGHT):
+    def __init__(self, serial, parent_dashboard=None, width=SCREEN_WIDTH, height=SCREEN_HEIGHT):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
         pygame.display.set_caption("Snake Game with STM32")
         self.clock = pygame.time.Clock()
         self.running = True
+        self.serial = serial
+        self.parent_dashboard = parent_dashboard  # Save it
 
         # Snake properties
         self.snake = [(width // 2, height // 2)]
@@ -43,9 +44,15 @@ class SnakeGame:
 
     def run(self):
         while self.running:
-            data = serial.read_data()
+            data = self.serial.read_data()
             self.draw(data)
             self.handle_events()
+
+        pygame.quit()
+
+        if self.parent_dashboard:
+            self.serial.send_command("dashboard")
+            self.parent_dashboard.show()
 
     def generate_food(self):
         x = random.randrange(GRID_SIZE, self.screen.get_width() - GRID_SIZE, GRID_SIZE)
